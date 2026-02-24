@@ -1,0 +1,29 @@
+ZiT freeform prompt style guide
+
+Goal: Convert an input JSON spec into a single freeform narrative prompt in natural language.
+
+Formatting:
+- Output ONLY plain text (no JSON).
+- Output in English.
+- 1 paragraph.
+
+Do NOT:
+- Do not mention "negative prompt".
+- If camera is explicit in input, keep that camera granularity in output (model, lens/focal length, settings, framing/angle).
+- Do not invent a camera model, lens, or settings if the input does not explicitly specify camera.
+- Do not include brand names or logos unless explicitly required.
+
+Aspect ratio:
+- If the JSON includes an aspect ratio, use it.
+- Else if it says landscape, assume 16:9.
+- Else default to 4:5.
+
+Content mapping:
+- Preserve: subject, pose, environment, lighting, mood, realism/photography style.
+- If the input contains reference-image instructions ("use attached" etc.), remove them and describe the identity in generic terms.
+
+Constraints:
+- If the input includes negative / negative_prompt / forbidden_elements / exclude_elements, append one final line:
+  CONSTRAINTS: ...
+- Keep only technical/compositional restrictions in CONSTRAINTS.
+- Remove sensual/explicit-content restrictions from CONSTRAINTS (for example: nudity, explicit, pornographic, nipples, areola, genitals).

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nano2zit — JSON → ZiT Freeform Converter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+      background: #0a0a0b;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    #root {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Header */
+    .header { margin-bottom: 32px; border-bottom: 1px solid #222; padding-bottom: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .logo-icon { font-size: 22px; }
+    .logo-text { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: #f5f5f5; }
+    .subtitle { font-size: 13px; color: #666; letter-spacing: 0.02em; }
+
+    /* Input */
+    .input-section { margin-bottom: 24px; }
+    .label { display: block; font-size: 13px; font-weight: 600; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .label-hint { font-weight: 400; text-transform: none; color: #555; letter-spacing: 0; }
+    .textarea {
+      width: 100%; min-height: 200px; background: #111113; border: 1px solid #2a2a2d;
+      border-radius: 8px; color: #d0d0d0; font-family: inherit; font-size: 13px;
+      padding: 14px 16px; resize: vertical; outline: none; line-height: 1.6;
+    }
+    .textarea:focus { border-color: #444; }
+    .input-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .block-count { font-size: 12px; color: #555; }
+
+    /* Buttons */
+    .btn-convert {
+      background: #c8ff00; color: #0a0a0b; border: none; border-radius: 6px;
+      padding: 10px 28px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: 0.02em;
+    }
+    .btn-convert:disabled { opacity: 0.4; cursor: default; }
+    .btn-stop {
+      background: #ff3333; color: #fff; border: none; border-radius: 6px;
+      padding: 10px 28px; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer;
+    }
+    .btn-bulk {
+      background: transparent; border: 1px solid #333; border-radius: 5px;
+      padding: 6px 14px; font-size: 12px; color: #aaa; font-family: inherit; cursor: pointer;
+    }
+    .btn-bulk:hover { border-color: #555; color: #ccc; }
+    .btn-bulk-nsfw { border-color: #442222; color: #cc8888; }
+    .btn-bulk-nsfw:hover { border-color: #663333; }
+    .btn-bulk-export { border-color: #224433; color: #88ccaa; }
+    .btn-bulk-export:hover { border-color: #336644; }
+    .btn-danger {
+      background: transparent; border: 1px solid #442222; border-radius: 5px;
+      padding: 6px 14px; font-size: 12px; color: #884444; font-family: inherit; cursor: pointer;
+    }
+    .btn-danger:hover { border-color: #663333; color: #aa5555; }
+    .btn-copy {
+      background: transparent; border: 1px solid #2a2a2d; border-radius: 4px;
+      padding: 4px 12px; font-size: 11px; color: #888; font-family: inherit; cursor: pointer;
+    }
+    .btn-copy:hover { border-color: #444; color: #bbb; }
+    .btn-json {
+      background: transparent; border: 1px solid #2a2a2d; border-radius: 4px;
+      padding: 3px 10px; font-size: 11px; color: #666; font-family: inherit; cursor: pointer;
+    }
+    .btn-delete {
+      background: transparent; border: none; color: #553333; font-size: 18px;
+      font-weight: 700; cursor: pointer; padding: 0 4px; line-height: 1;
+    }
+    .btn-delete:hover { color: #aa4444; }
+
+    /* Progress */
+    .progress-bar { height: 3px; background: #1a1a1d; border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #c8ff00; transition: width 0.4s ease; border-radius: 2px; }
+
+    /* Error */
+    .error { margin-top: 10px; padding: 10px 14px; background: #1a0505; border: 1px solid #441111; border-radius: 6px; color: #ff6b6b; font-size: 13px; }
+
+    /* Results */
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    .results-title { font-size: 14px; font-weight: 600; color: #888; }
+    .bulk-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Card */
+    .card { background: #111113; border: 1px solid #1e1e22; border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+    .card-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #1a1a1d; }
+    .card-index { font-size: 12px; font-weight: 700; color: #c8ff00; min-width: 30px; }
+    .card-label { font-size: 13px; color: #888; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ref-link {
+      font-size: 11px; color: #6688aa; text-decoration: none;
+      border: 1px solid #1a2a3a; border-radius: 4px; padding: 3px 8px; white-space: nowrap;
+    }
+    .ref-link:hover { border-color: #3355aa; color: #88aacc; }
+    .json-pre {
+      margin: 0; padding: 12px 16px; font-size: 11px; line-height: 1.5; color: #666;
+      background: #0c0c0e; border-bottom: 1px solid #1a1a1d; overflow-x: auto; max-height: 250px;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .tab-row { display: flex; align-items: center; gap: 2px; padding: 8px 16px 0; }
+    .tab {
+      border: none; border-radius: 5px 5px 0 0; padding: 7px 18px; font-size: 12px;
+      font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: 0.04em;
+    }
+    .tab-sfw { background: #1a2600; color: #c8ff00; }
+    .tab-nsfw { background: #260808; color: #ff6b6b; }
+    .tab-inactive { background: transparent; color: #555; }
+    .prompt-text { padding: 14px 16px 18px; font-size: 13px; line-height: 1.7; color: #ccc; white-space: pre-wrap; word-break: break-word; }
+
+    /* API key banner */
+    .api-banner {
+      background: #1a1400; border: 1px solid #332800; border-radius: 8px;
+      padding: 14px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .api-banner label { font-size: 12px; color: #aa9944; font-weight: 600; white-space: nowrap; }
+    .api-input {
+      flex: 1; min-width: 200px; background: #111113; border: 1px solid #332800; border-radius: 5px;
+      color: #d0d0d0; font-family: inherit; font-size: 12px; padding: 7px 12px; outline: none;
+    }
+    .api-input:focus { border-color: #554400; }
+    .api-status { font-size: 11px; }
+    .api-ok { color: #88aa44; }
+    .api-missing { color: #aa5544; }
+
+    .loading { text-align: center; color: #444; font-size: 13px; padding: 24px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-type="module">
+    const { useState, useRef, useCallback, useEffect } = React;
+
+    // ── Storage (localStorage) ──
+
+    const STORAGE_KEY = "nano2zit:data";
+    const FALLBACK_PROMPT_PROFILES = [
+      { id: "v3-balanced", name: "Balanced (Recommended)", description: "Moderate cost, strong schema adherence." },
+      { id: "v3-strict", name: "Strict Style Guide", description: "Lower cost, stricter one-paragraph output." },
+      { id: "v3-rich", name: "Rich Detail", description: "Higher detail with larger prompt context." },
+    ];
+    const DEFAULT_PROMPT_PROFILE = "v3-balanced";
+
+    function saveData(results, counter) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ results, counter })); } catch {}
+    }
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) { const p = JSON.parse(raw); return { results: p.results || [], counter: p.counter || 0 }; }
+      } catch {}
+      return { results: [], counter: 0 };
+    }
+
+    function clearStoredData() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    }
+
+    // ── CSV export ──
+
+    function escCsv(s) {
+      if (!s) return "";
+      if (s.includes('"') || s.includes(",") || s.includes("\n")) return '"' + s.replace(/"/g, '""') + '"';
+      return s;
+    }
+
+    function exportCsv(results) {
+      const header = "num,label,ref,sfw,nsfw,json_input";
+      const rows = results.map(r =>
+        [r.num, escCsv(r.label), escCsv(r.ref || ""), escCsv(r.sfw), escCsv(r.nsfw), escCsv(r.json)].join(",")
+      );
+      const blob = new Blob([header + "\n" + rows.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `nano2zit_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // ── Helpers ──
+
+    function extractJsonBlocks(text) {
+      const blocks = [];
+      let depth = 0, start = -1;
+      for (let i = 0; i < text.length; i++) {
+        if (text[i] === "{") { if (depth === 0) start = i; depth++; }
+        else if (text[i] === "}") {
+          depth--;
+          if (depth === 0 && start >= 0) {
+            const json = text.substring(start, i + 1);
+            const before = text.substring(0, start).trimEnd();
+            const lastLine = before.split("\\n").pop().trim();
+            const ref = /^https?:\\/\\/\\S+$/i.test(lastLine) ? lastLine : "";
+            blocks.push({ json, ref });
+            start = -1;
+          }
+        }
+      }
+      return blocks;
+    }
+
+    function truncate(s, n = 80) { return s.length > n ? s.substring(0, n) + "…" : s; }
+
+    function labelFromJson(json) {
+      try {
+        const obj = JSON.parse(json);
+        const scene = obj.scene?.location || obj.environment?.setting || obj.image_generation_prompt?.environment?.setting || "";
+        const subj = obj.subject?.description || obj.subject?.gender || obj.image_generation_prompt?.subject_and_pose?.subject || "";
+        return truncate([subj, scene].filter(Boolean).join(" — ") || "Prompt", 60);
+      } catch { return "Prompt"; }
+    }
+
+    // ── API ──
+
+    async function loadServerConfig() {
+      const resp = await fetch("/api/convert?meta=1", { method: "GET" });
+      if (!resp.ok) return null;
+      try { return await resp.json(); } catch { return null; }
+    }
+
+    async function convertPrompt(jsonStr, promptVersion) {
+      const resp = await fetch("/api/convert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input_json: jsonStr,
+          prompt_version: promptVersion || DEFAULT_PROMPT_PROFILE,
+        }),
+      });
+
+      let data = null;
+      try { data = await resp.json(); } catch {}
+      if (!resp.ok) {
+        const msg = data?.error || `API ${resp.status}`;
+        throw new Error(msg);
+      }
+
+      if (!data?.sfw || !data?.nsfw) {
+        throw new Error("Missing SFW/NSFW payload from API.");
+      }
+      return { sfw: data.sfw, nsfw: data.nsfw, model: data.model, provider: data.provider };
+    }
+
+    // ── Components ──
+
+    function CopyButton({ text, label }) {
+      const [copied, setCopied] = useState(false);
+      const handleCopy = useCallback(() => {
+        navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500); });
+      }, [text]);
+      return <button className="btn-copy" onClick={handleCopy}>{copied ? "✓" : label || "Copy"}</button>;
+    }
+
+    function PromptCard({ num, label, sfw, nsfw, json, refUrl, onDelete }) {
+      const [showJson, setShowJson] = useState(false);
+      const [tab, setTab] = useState("sfw");
+      const current = tab === "sfw" ? sfw : nsfw;
+
+      return (
+        <div className="card">
+          <div className="card-header">
+            <span className="card-index">#{num}</span>
+            <span className="card-label">{label}</span>
+            {refUrl && <a href={refUrl} target="_blank" rel="noopener noreferrer" className="ref-link" title={refUrl}>↗ src</a>}
+            <button className="btn-json" onClick={() => setShowJson(!showJson)}>{showJson ? "Hide" : "JSON"}</button>
+            <button className="btn-delete" onClick={onDelete} title="Remove">×</button>
+          </div>
+          {showJson && <pre className="json-pre">{(() => { try { return JSON.stringify(JSON.parse(json), null, 2); } catch { return json; } })()}</pre>}
+          <div className="tab-row">
+            <button className={`tab ${tab === "sfw" ? "tab-sfw" : "tab-inactive"}`} onClick={() => setTab("sfw")}>SFW</button>
+            <button className={`tab ${tab === "nsfw" ? "tab-nsfw" : "tab-inactive"}`} onClick={() => setTab("nsfw")}>NSFW</button>
+            <div style={{flex:1}} />
+            <CopyButton text={current} />
+          </div>
+          <div className="prompt-text">{current}</div>
+        </div>
+      );
+    }
+
+    // ── Main ──
+
+    function App() {
+      const [input, setInput] = useState("");
+      const [results, setResults] = useState([]);
+      const [processing, setProcessing] = useState(false);
+      const [progress, setProgress] = useState({ current: 0, total: 0 });
+      const [error, setError] = useState("");
+      const [loaded, setLoaded] = useState(false);
+      const [promptProfile, setPromptProfile] = useState(DEFAULT_PROMPT_PROFILE);
+      const [serverMeta, setServerMeta] = useState({
+        provider: "unknown",
+        model: "unconfigured",
+        prompt_profiles: FALLBACK_PROMPT_PROFILES,
+        default_prompt_profile: DEFAULT_PROMPT_PROFILE,
+      });
+      const abortRef = useRef(false);
+      const resultsRef = useRef([]);
+      const counterRef = useRef(0);
+
+      useEffect(() => {
+        const { results: stored, counter } = loadData();
+        if (stored.length > 0) { setResults(stored); resultsRef.current = stored; }
+        counterRef.current = counter;
+        setLoaded(true);
+      }, []);
+
+      useEffect(() => {
+        loadServerConfig().then((meta) => {
+          if (!meta) return;
+          setServerMeta({
+            provider: meta.provider || "unknown",
+            model: meta.model || "unconfigured",
+            prompt_profiles: Array.isArray(meta.prompt_profiles) && meta.prompt_profiles.length > 0
+              ? meta.prompt_profiles
+              : FALLBACK_PROMPT_PROFILES,
+            default_prompt_profile: meta.default_prompt_profile || DEFAULT_PROMPT_PROFILE,
+          });
+          if (meta.default_prompt_profile) {
+            setPromptProfile(meta.default_prompt_profile);
+          }
+        }).catch(() => {});
+      }, []);
+
+      useEffect(() => { if (loaded) saveData(results, counterRef.current); }, [results, loaded]);
+
+      const handleDelete = useCallback((idx) => {
+        setResults(prev => {
+          const next = prev.filter((_, i) => i !== idx);
+          resultsRef.current = next;
+          if (next.length === 0) clearStoredData(); else saveData(next, counterRef.current);
+          return next;
+        });
+      }, []);
+
+      const handleClearAll = useCallback(() => {
+        setResults([]); resultsRef.current = []; counterRef.current = 0; clearStoredData();
+      }, []);
+
+      const handleConvert = useCallback(async () => {
+        setError("");
+        const blocks = extractJsonBlocks(input);
+        if (blocks.length === 0) { setError("No valid JSON objects found."); return; }
+
+        for (let i = 0; i < blocks.length; i++) {
+          try { JSON.parse(blocks[i].json); }
+          catch (e) { setError(`JSON block #${i + 1} invalid: ${e.message}`); return; }
+        }
+
+        setProcessing(true);
+        setProgress({ current: 0, total: blocks.length });
+        abortRef.current = false;
+        const base = [...resultsRef.current];
+
+        for (let i = 0; i < blocks.length; i++) {
+          if (abortRef.current) break;
+          setProgress({ current: i + 1, total: blocks.length });
+
+          try {
+            const { sfw, nsfw } = await convertPrompt(blocks[i].json, promptProfile);
+            counterRef.current += 1;
+            base.push({ num: counterRef.current, json: blocks[i].json, ref: blocks[i].ref, label: labelFromJson(blocks[i].json), sfw: sfw || "(empty)", nsfw: nsfw || "(empty)", ts: Date.now() });
+          } catch (err) {
+            counterRef.current += 1;
+            base.push({ num: counterRef.current, json: blocks[i].json, ref: blocks[i].ref, label: labelFromJson(blocks[i].json), sfw: `ERROR: ${err.message}`, nsfw: `ERROR: ${err.message}`, ts: Date.now() });
+          }
+
+          resultsRef.current = [...base];
+          setResults([...base]);
+
+          if (i < blocks.length - 1 && !abortRef.current) await new Promise(r => setTimeout(r, 500));
+        }
+        setProcessing(false);
+        setInput("");
+      }, [input, promptProfile]);
+
+      const handleStop = useCallback(() => { abortRef.current = true; }, []);
+
+      const handleCopyAll = useCallback((type) => {
+        const all = results.map(r => {
+          const h = `--- #${r.num}: ${r.label}${r.ref ? ` (${r.ref})` : ""} ---`;
+          return `${h}\n${type === "sfw" ? r.sfw : r.nsfw}`;
+        }).join("\n\n");
+        navigator.clipboard.writeText(all);
+      }, [results]);
+
+      const blockCount = extractJsonBlocks(input).length;
+      const detectedRefs = extractJsonBlocks(input).filter(b => b.ref).length;
+
+      return (
+        <div>
+          <header className="header">
+            <div className="logo">
+              <span className="logo-icon">⚡</span>
+              <span className="logo-text">nano2zit</span>
+            </div>
+            <span className="subtitle">
+              Nano Banana Pro JSON → Z-Image Turbo freeform · {serverMeta.provider}/{serverMeta.model}
+            </span>
+          </header>
+
+          <div className="api-banner">
+            <label>Prompt profile:</label>
+            <select value={promptProfile} onChange={e => setPromptProfile(e.target.value)}
+              style={{background:"#111113",border:"1px solid #332800",borderRadius:5,color:"#d0d0d0",fontFamily:"inherit",fontSize:12,padding:"6px 10px",outline:"none"}}>
+              {serverMeta.prompt_profiles.map((profile) => (
+                <option key={profile.id} value={profile.id}>{profile.name || profile.id}</option>
+              ))}
+            </select>
+            <span className="api-status api-ok">Provider: {serverMeta.provider}</span>
+            <span className="api-status api-ok">Model: {serverMeta.model}</span>
+          </div>
+
+          <div className="input-section">
+            <label className="label">
+              Paste JSON prompts <span className="label-hint">(optional URL on the line before each JSON block)</span>
+            </label>
+            <textarea className="textarea" value={input} onChange={e => setInput(e.target.value)} spellCheck={false}
+              placeholder={'https://x.com/user/status/123456\n{\n  "meta": { "aspect_ratio": "9:16", ... },\n  "subject": { ... }\n}\n\n{\n  "image_generation_prompt": { ... }\n}'} />
+            <div className="input-footer">
+              <span className="block-count">
+                {blockCount} prompt{blockCount !== 1 ? "s" : ""} detected
+                {detectedRefs > 0 && ` · ${detectedRefs} with link`}
+              </span>
+              {!processing ? (
+                <button className="btn-convert" disabled={!input.trim()} onClick={handleConvert}>
+                  Convert{results.length > 0 ? " & Append" : " All"}
+                </button>
+              ) : (
+                <button className="btn-stop" onClick={handleStop}>■ Stop ({progress.current}/{progress.total})</button>
+              )}
+            </div>
+            {error && <div className="error">{error}</div>}
+          </div>
+
+          {processing && (
+            <div className="progress-bar">
+              <div className="progress-fill" style={{width: `${(progress.current/progress.total)*100}%`}} />
+            </div>
+          )}
+
+          {results.length > 0 && (
+            <div>
+              <div className="results-header">
+                <span className="results-title">
+                  {results.length} result{results.length !== 1 ? "s" : ""}
+                  {processing ? " (processing…)" : ""}
+                </span>
+                <div className="bulk-actions">
+                  <button className="btn-bulk" onClick={() => handleCopyAll("sfw")}>Copy all SFW</button>
+                  <button className="btn-bulk btn-bulk-nsfw" onClick={() => handleCopyAll("nsfw")}>Copy all NSFW</button>
+                  <button className="btn-bulk btn-bulk-export" onClick={() => exportCsv(results)}>↓ CSV</button>
+                  <button className="btn-danger" onClick={handleClearAll}>Clear all</button>
+                </div>
+              </div>
+              {results.map((r, i) => (
+                <PromptCard key={r.num || i} num={r.num || i+1} label={r.label} sfw={r.sfw} nsfw={r.nsfw} json={r.json} refUrl={r.ref} onDelete={() => handleDelete(i)} />
+              ))}
+            </div>
+          )}
+
+          {!loaded && <div className="loading">Loading saved results…</div>}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
