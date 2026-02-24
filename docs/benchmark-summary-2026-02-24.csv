@@ -1,0 +1,7 @@
+rank,model,profile,avg_score,parse_success_pct,constraints_ok_pct,aspect_ok_pct,banned_clean_pct,avg_latency_ms,avg_sfw_words,avg_nsfw_words,total_cost_usd,avg_cost_per_call_usd,calls_ok,calls_errors,input_tokens,output_tokens
+1,"openai-compat:qwen/qwen-2.5-72b-instruct",v3-rich,91.33,100,83.33,33.33,100,11934.83,167.67,181.17,0.003515,0.000586,6,0,11568,2843
+2,"openai-compat:Qwen/Qwen3-32B",v3-rich,90.67,100,100,33.33,100,26785.83,170.17,176.83,0.004703,0.000784,6,0,11575,9153
+3,"openai-compat:qwen/qwen-2.5-72b-instruct",v3-balanced,88,100,83.33,0,100,10693.67,144,153.17,0.002653,0.000442,6,0,10350,2477
+4,"openai-compat:Qwen/Qwen3-32B",v3-balanced,80.67,83.33,83.33,16.67,100,25005.67,129.67,138.17,0.004678,0.000780,6,0,10353,9093
+5,"openai-compat:Qwen/Qwen2.5-72B-Instruct",v3-balanced,0,0,0,0,0,0,0,0,0.000000,0.000000,0,6,0,0
+6,"openai-compat:Qwen/Qwen2.5-72B-Instruct",v3-rich,0,0,0,0,0,0,0,0,0.000000,0.000000,0,6,0,0
