@@ -32,5 +32,6 @@
 - PRs should include: goal, changed files, local test commands, benchmark impact (if prompt logic changed), and UI screenshots for frontend edits.
 
 ## Security & Configuration Tips
-- Never commit API keys. Configure via env vars only: `ANTHROPIC_API_KEY`, `OPENAI_COMPAT_API_KEY`, `OPENAI_COMPAT_BASE_URL`, `LLM_PROVIDER`, `LLM_MODEL`, `LLM_MAX_TOKENS`, `LLM_TEMPERATURE`.
+- Never commit API keys. Configure via env vars only: `ANTHROPIC_API_KEY`, `LLM_COMPAT_API_KEY`, `LLM_COMPAT_BASE_URL`, `LLM_PROVIDER`, `LLM_MODEL`, `LLM_MAX_TOKENS`, `LLM_TEMPERATURE`.
+- Legacy compatibility is still accepted for migration: `OPENAI_COMPAT_API_KEY` and `OPENAI_COMPAT_BASE_URL`.
 - Keep provider/model selection server-side; browser should never receive raw secret keys.

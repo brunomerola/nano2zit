@@ -9,7 +9,43 @@ const { generateCompletion, getRuntimeModelConfig } = require("../lib/llm-client
 const { parseSfwNsfw } = require("../lib/response-parser");
 
 const MAX_INPUT_JSON_CHARS = 60000;
-const NEGATIVE_KEYS = new Set(["negative", "negative_prompt", "forbidden_elements", "exclude_elements"]);
+const STRONG_CONSTRAINT_KEYS = new Set([
+  "negative",
+  "negative_prompt",
+  "negative_prompt_strict",
+  "negative_prompt_string",
+  "forbidden_elements",
+  "forbidden_content",
+  "exclude_elements",
+  "constraints",
+  "realism_constraints",
+  "crop_restriction",
+  "no_filters",
+]);
+const CONSTRAINT_KEY_TOKENS = new Set([
+  "negative",
+  "constraint",
+  "constraints",
+  "forbid",
+  "forbidden",
+  "exclude",
+  "excluded",
+  "avoid",
+  "ban",
+  "banned",
+  "prohibit",
+  "prohibited",
+  "restrict",
+  "restriction",
+  "disallow",
+  "blacklist",
+  "forbidden_elements",
+  "exclude_elements",
+  "forbidden_content",
+  "crop_restriction",
+  "no_filters",
+]);
+const CONSTRAINT_VALUE_CUE_REGEX = /\b(no\s+[^,.;]{1,48}|without\s+[^,.;]{1,48}|avoid\b|exclude\b|forbid\b|forbidden\b|ban\b|banned\b|prohibit\b|prohibited\b|disallow\b|do\s+not\b|must\s+not\b|never\b|constraint[s]?\b)\b/i;
 const NSFW_SIGNAL_REGEX = /\b(nsfw|nude|nudity|naked|nipples?|areola|genitals?|vagina|penis|sex|sexual|erotic|explicit|lingerie|see[-\s]?through|thong)\b/i;
 
 class BadRequestError extends Error {}
@@ -72,23 +108,92 @@ function collectLeafText(value, output) {
   }
 }
 
-function collectNegativeHints(value, output) {
-  if (!value || typeof value !== "object") {
+function keyTokens(key) {
+  return String(key)
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
+}
+
+function isStrongConstraintKey(key) {
+  return STRONG_CONSTRAINT_KEYS.has(String(key).toLowerCase());
+}
+
+function isConstraintLikeKey(key) {
+  const tokens = keyTokens(key);
+  if (tokens.some((token) => CONSTRAINT_KEY_TOKENS.has(token))) {
+    return true;
+  }
+  // Includes key forms like no_filters, no_blur, no_artifacts.
+  if (tokens.some((token) => token.startsWith("no") && token.length > 2)) {
+    return true;
+  }
+  return false;
+}
+
+function looksConstraintLikeText(text) {
+  const normalized = String(text || "").replace(/\s+/g, " ").trim();
+  if (!normalized) {
+    return false;
+  }
+  return CONSTRAINT_VALUE_CUE_REGEX.test(normalized);
+}
+
+function shouldIncludeStrongKeyString(key, value) {
+  if (isStrongConstraintKey(key)) {
+    return true;
+  }
+  const normalized = String(value || "").replace(/\s+/g, " ").trim();
+  if (!normalized) {
+    return false;
+  }
+  if (looksConstraintLikeText(normalized)) {
+    return true;
+  }
+  // Handles list-like negatives such as "cartoon, blurry, low-res, ...".
+  if (normalized.length <= 420 && normalized.split(",").length >= 3) {
+    return true;
+  }
+  return false;
+}
+
+function collectConstraintHints(value, keyBasedHints, ambientHints) {
+  if (value == null) {
     return;
   }
   if (Array.isArray(value)) {
     for (const item of value) {
-      collectNegativeHints(item, output);
+      collectConstraintHints(item, keyBasedHints, ambientHints);
     }
     return;
   }
-  for (const [rawKey, nested] of Object.entries(value)) {
-    const key = String(rawKey).toLowerCase();
-    if (NEGATIVE_KEYS.has(key)) {
-      collectLeafText(nested, output);
+  if (typeof value === "string") {
+    if (looksConstraintLikeText(value)) {
+      ambientHints.push(value);
     }
-    if (nested && typeof nested === "object") {
-      collectNegativeHints(nested, output);
+    return;
+  }
+  if (typeof value !== "object") {
+    return;
+  }
+
+  for (const [rawKey, nested] of Object.entries(value)) {
+    const key = String(rawKey);
+    if (isConstraintLikeKey(key)) {
+      if (typeof nested === "string") {
+        if (shouldIncludeStrongKeyString(key, nested)) {
+          keyBasedHints.push(nested);
+        }
+      } else {
+        collectLeafText(nested, keyBasedHints);
+      }
+    }
+    if (typeof nested === "string") {
+      if (looksConstraintLikeText(nested)) {
+        ambientHints.push(nested);
+      }
+    } else if (nested && typeof nested === "object") {
+      collectConstraintHints(nested, keyBasedHints, ambientHints);
     }
   }
 }
@@ -118,24 +223,25 @@ function buildConversionDirectives(inputJson) {
     return { directives: "", hasNegativeHints: false, hasExplicitSignals: false };
   }
 
-  const allNegativeHints = [];
-  collectNegativeHints(parsed, allNegativeHints);
-  const negativeHints = uniqueHints(allNegativeHints);
+  const keyBasedHints = [];
+  const ambientHints = [];
+  collectConstraintHints(parsed, keyBasedHints, ambientHints);
+  const constraintHints = uniqueHints([...keyBasedHints, ...ambientHints]);
   const hasExplicitSignals = NSFW_SIGNAL_REGEX.test(inputJson);
-  const hasNegativeHints = negativeHints.length > 0;
+  const hasConstraintHints = constraintHints.length > 0;
 
   const lines = [
     "DIRECTIVES (MUST FOLLOW)",
-    `- negative_hints_found: ${hasNegativeHints ? "yes" : "no"}`,
+    `- constraint_hints_found: ${hasConstraintHints ? "yes" : "no"}`,
     `- explicit_or_nsfw_cues_found: ${hasExplicitSignals ? "yes" : "no"}`,
   ];
 
-  if (hasNegativeHints) {
-    lines.push("- Convert every negative hint into positive guidance.");
+  if (hasConstraintHints) {
+    lines.push("- Convert every constraint hint into positive guidance.");
     lines.push("- Append one final CONSTRAINTS line to BOTH <SFW> and <NSFW>.");
-    lines.push("- Cover all negative hints across those two CONSTRAINTS lines.");
-    lines.push("NEGATIVE_HINTS:");
-    for (const hint of negativeHints) {
+    lines.push("- Cover all constraint hints across those two CONSTRAINTS lines.");
+    lines.push("CONSTRAINT_HINTS:");
+    for (const hint of constraintHints) {
       lines.push(`- ${hint}`);
     }
   }
@@ -146,7 +252,7 @@ function buildConversionDirectives(inputJson) {
 
   return {
     directives: lines.join("\n"),
-    hasNegativeHints,
+    hasConstraintHints,
     hasExplicitSignals,
   };
 }
@@ -220,7 +326,8 @@ module.exports = async function handler(req, res) {
       prompt_version: resolvedProfile,
       usage: completion.usage || null,
       conversion_directives: {
-        negative_hints_found: directives.hasNegativeHints,
+        negative_hints_found: directives.hasConstraintHints,
+        constraint_hints_found: directives.hasConstraintHints,
         explicit_or_nsfw_cues_found: directives.hasExplicitSignals,
       },
     });
