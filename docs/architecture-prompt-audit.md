@@ -15,6 +15,7 @@
 - Added structured response parser (`lib/response-parser.js`) with XML-first parsing.
 - Added benchmark harness (`scripts/benchmark-models.js`) for model/profile adherence scoring.
 - Added few-shot selector (`scripts/select_fewshot_examples.py`) to keep examples structurally diverse and token-efficient.
+- Added deterministic directive extraction in API layer for negative keys and NSFW cues, injected into each conversion request.
 
 ## Pre-prompt compliance checks
 - Plain-text output requirement: enforced.
