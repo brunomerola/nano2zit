@@ -398,7 +398,8 @@ Options:
   --profiles=v3-balanced,v3-rich
   --targets=openai-compat:Qwen/Qwen3-32B,openai-compat:Qwen/Qwen2.5-72B-Instruct
   --delay-ms=250
-  --out=docs/benchmark-report.json`);
+  --out=docs/benchmark-report.json
+  --dry-run`);
     return;
   }
 
@@ -430,6 +431,14 @@ Options:
   console.log(`Selected ${samples.length} compact + schema-diverse samples`);
   console.log(`Profiles: ${profiles.join(", ")}`);
   console.log(`Targets: ${targets.map((t) => t.id).join(", ")}`);
+
+  if (args["dry-run"]) {
+    console.log("Dry run enabled: no model calls will be executed.");
+    for (const sample of samples) {
+      console.log(`sample prompt_id=${sample.promptId} signature=${sample.signature} json_chars=${sample.jsonChars}`);
+    }
+    return;
+  }
 
   const startedAt = new Date().toISOString();
   const cases = [];

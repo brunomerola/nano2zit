@@ -46,7 +46,7 @@ def has_banned_term(text: str) -> bool:
     return any(re.search(pattern, low) for pattern in BANNED_TERMS)
 
 
-def sanitize_output(text: str, max_words: int = 120) -> str:
+def sanitize_output(text: str, max_words: int = 75) -> str:
     cleaned = normalize_ws(text)
     for pattern in BANNED_TERMS:
         cleaned = re.sub(pattern, "", cleaned, flags=re.IGNORECASE)
@@ -57,7 +57,7 @@ def sanitize_output(text: str, max_words: int = 120) -> str:
     return cleaned
 
 
-def truncate_text(text: str, max_words: int = 22) -> str:
+def truncate_text(text: str, max_words: int = 12) -> str:
     text = normalize_ws(text)
     words = text.split()
     if len(words) <= max_words:
@@ -65,26 +65,26 @@ def truncate_text(text: str, max_words: int = 22) -> str:
     return " ".join(words[:max_words]).rstrip(" ,.;:") + "..."
 
 
-def compact_json(value: Any, depth: int = 0, max_depth: int = 4) -> Any:
+def compact_json(value: Any, depth: int = 0, max_depth: int = 3) -> Any:
     if depth >= max_depth:
         if isinstance(value, str):
-            return truncate_text(value, 16)
+            return truncate_text(value, 10)
         if isinstance(value, list):
-            return [truncate_text(str(value[0]), 12)] if value else []
+            return [truncate_text(str(value[0]), 8)] if value else []
         if isinstance(value, dict):
             return {k: "..." for k in list(value.keys())[:2]}
         return value
 
     if isinstance(value, str):
-        return truncate_text(value, 22)
+        return truncate_text(value, 12)
 
     if isinstance(value, list):
-        items = value[:2]
+        items = value[:1]
         return [compact_json(item, depth + 1, max_depth) for item in items]
 
     if isinstance(value, dict):
         # Keep deterministic key order while trimming excessive breadth.
-        keys = list(value.keys())[:10]
+        keys = list(value.keys())[:6]
         return {k: compact_json(value[k], depth + 1, max_depth) for k in keys}
 
     return value
