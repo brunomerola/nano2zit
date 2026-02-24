@@ -10,6 +10,8 @@ const { parseSfwNsfw } = require("../lib/response-parser");
 
 const MAX_INPUT_JSON_CHARS = 60000;
 
+class BadRequestError extends Error {}
+
 function parseBody(req) {
   if (!req.body) {
     return {};
@@ -19,7 +21,7 @@ function parseBody(req) {
       return JSON.parse(req.body);
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      throw new Error(`Invalid JSON request body: ${message}`);
+      throw new BadRequestError(`Invalid JSON request body: ${message}`);
     }
   }
   return req.body;
@@ -27,16 +29,16 @@ function parseBody(req) {
 
 function validateInputJson(inputJson) {
   if (typeof inputJson !== "string" || inputJson.trim().length === 0) {
-    throw new Error("input_json is required");
+    throw new BadRequestError("input_json is required");
   }
   if (inputJson.length > MAX_INPUT_JSON_CHARS) {
-    throw new Error(`input_json exceeds ${MAX_INPUT_JSON_CHARS} characters`);
+    throw new BadRequestError(`input_json exceeds ${MAX_INPUT_JSON_CHARS} characters`);
   }
   try {
     JSON.parse(inputJson);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    throw new Error(`Invalid JSON input: ${message}`);
+    throw new BadRequestError(`Invalid JSON input: ${message}`);
   }
 }
 
@@ -104,6 +106,7 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    res.status(500).json({ error: message });
+    const status = err instanceof BadRequestError ? 400 : 500;
+    res.status(status).json({ error: message });
   }
 };
