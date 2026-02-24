@@ -1,0 +1,693 @@
+{
+  "startedAt": "2026-02-24T21:12:04.846Z",
+  "finishedAt": "2026-02-24T21:14:24.859Z",
+  "config": {
+    "csvPath": "prompts.csv",
+    "sampleSize": 6,
+    "maxJsonChars": 4200,
+    "delayMs": 350,
+    "profiles": [
+      "v3-balanced",
+      "v3-rich"
+    ],
+    "targets": [
+      {
+        "id": "openai-compat:qwen/qwen-2.5-72b-instruct",
+        "provider": "openai-compat",
+        "model": "qwen/qwen-2.5-72b-instruct",
+        "openaiCompatBaseUrl": "https://openrouter.ai/api/v1"
+      }
+    ],
+    "defaultProfile": "v3-balanced",
+    "runtimeModelConfig": {
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "maxTokens": 4096,
+      "temperature": 0.2,
+      "openaiCompatBaseUrl": "https://openrouter.ai/api/v1"
+    }
+  },
+  "dataset": {
+    "totalRows": 70,
+    "selectedSamples": [
+      {
+        "promptId": "43",
+        "tweetId": "2006628018068893986",
+        "signature": "image_generation_prompt",
+        "jsonChars": 1982
+      },
+      {
+        "promptId": "11",
+        "tweetId": "2011264537450987944",
+        "signature": "image_description",
+        "jsonChars": 1224
+      },
+      {
+        "promptId": "46",
+        "tweetId": "2005002407013400789",
+        "signature": "model_hint|negative_prompt|prompt",
+        "jsonChars": 637
+      },
+      {
+        "promptId": "5",
+        "tweetId": "2011913223964852336",
+        "signature": "camera|environment|lighting|quality|style|subject",
+        "jsonChars": 1095
+      },
+      {
+        "promptId": "77",
+        "tweetId": "2008964874400092374",
+        "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+        "jsonChars": 1122
+      },
+      {
+        "promptId": "8",
+        "tweetId": "2011431885986320524",
+        "signature": "camera|composition|lighting|mood|prompt|quality|style",
+        "jsonChars": 961
+      }
+    ]
+  },
+  "summary": [
+    {
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "total": 6,
+      "ok": 6,
+      "errors": 0,
+      "avgScore": 91.33,
+      "avgLatencyMs": 11934.83,
+      "avgSfwWords": 167.67,
+      "avgNsfwWords": 181.17,
+      "parseSuccessPct": 100,
+      "constraintsOkPct": 83.33,
+      "bannedCleanPct": 100,
+      "aspectOkPct": 33.33
+    },
+    {
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "total": 6,
+      "ok": 6,
+      "errors": 0,
+      "avgScore": 88,
+      "avgLatencyMs": 10693.67,
+      "avgSfwWords": 144,
+      "avgNsfwWords": 153.17,
+      "parseSuccessPct": 100,
+      "constraintsOkPct": 83.33,
+      "bannedCleanPct": 100,
+      "aspectOkPct": 0
+    }
+  ],
+  "cases": [
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 14802,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 199,
+      "nsfwWords": 207,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1936,
+        "completion_tokens": 553,
+        "total_tokens": 2489,
+        "cost": 0.00044799,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00044799,
+          "upstream_inference_prompt_cost": 0.00023232,
+          "upstream_inference_completions_cost": 0.00021567
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 9212,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": false,
+      "sfwWords": 125,
+      "nsfwWords": 137,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1711,
+        "completion_tokens": 348,
+        "total_tokens": 2059,
+        "cost": 0.00034104,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00034104,
+          "upstream_inference_prompt_cost": 0.00020532,
+          "upstream_inference_completions_cost": 0.00013572
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 7216,
+      "score": 78,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": false,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": true,
+      "hasCameraData": false,
+      "sfwWords": 84,
+      "nsfwWords": 100,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1586,
+        "completion_tokens": 280,
+        "total_tokens": 1866,
+        "cost": 0.00029952,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00029952,
+          "upstream_inference_prompt_cost": 0.00019032,
+          "upstream_inference_completions_cost": 0.0001092
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 10526,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 124,
+      "nsfwWords": 135,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1763,
+        "completion_tokens": 364,
+        "total_tokens": 2127,
+        "cost": 0.00035352,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00035352,
+          "upstream_inference_prompt_cost": 0.00021156,
+          "upstream_inference_completions_cost": 0.00014196
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 14260,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 204,
+      "nsfwWords": 204,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1689,
+        "completion_tokens": 609,
+        "total_tokens": 2298,
+        "cost": 0.00088542,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00088542,
+          "upstream_inference_prompt_cost": 0.00064182,
+          "upstream_inference_completions_cost": 0.0002436
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-balanced",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 8146,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 128,
+      "nsfwWords": 136,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1665,
+        "completion_tokens": 323,
+        "total_tokens": 1988,
+        "cost": 0.00032577,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00032577,
+          "upstream_inference_prompt_cost": 0.0001998,
+          "upstream_inference_completions_cost": 0.00012597
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 17700,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 253,
+      "nsfwWords": 262,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 2139,
+        "completion_tokens": 727,
+        "total_tokens": 2866,
+        "cost": 0.00054021,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00054021,
+          "upstream_inference_prompt_cost": 0.00025668,
+          "upstream_inference_completions_cost": 0.00028353
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 10509,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": false,
+      "sfwWords": 157,
+      "nsfwWords": 185,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1914,
+        "completion_tokens": 433,
+        "total_tokens": 2347,
+        "cost": 0.00090052,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00090052,
+          "upstream_inference_prompt_cost": 0.00072732,
+          "upstream_inference_completions_cost": 0.0001732
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 8241,
+      "score": 78,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": false,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": true,
+      "hasCameraData": false,
+      "sfwWords": 109,
+      "nsfwWords": 117,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1789,
+        "completion_tokens": 308,
+        "total_tokens": 2097,
+        "cost": 0.0003348,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0003348,
+          "upstream_inference_prompt_cost": 0.00021468,
+          "upstream_inference_completions_cost": 0.00012012
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 11162,
+      "score": 100,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": true,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 160,
+      "nsfwWords": 178,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1966,
+        "completion_tokens": 458,
+        "total_tokens": 2424,
+        "cost": 0.00093028,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00093028,
+          "upstream_inference_prompt_cost": 0.00074708,
+          "upstream_inference_completions_cost": 0.0001832
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 13455,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 187,
+      "nsfwWords": 198,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1892,
+        "completion_tokens": 544,
+        "total_tokens": 2436,
+        "cost": 0.0004392,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0004392,
+          "upstream_inference_prompt_cost": 0.00022704,
+          "upstream_inference_completions_cost": 0.00021216
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:qwen/qwen-2.5-72b-instruct",
+      "profileId": "v3-rich",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 10542,
+      "score": 100,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": true,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 140,
+      "nsfwWords": 147,
+      "provider": "openai-compat",
+      "model": "qwen/qwen-2.5-72b-instruct",
+      "usage": {
+        "prompt_tokens": 1868,
+        "completion_tokens": 373,
+        "total_tokens": 2241,
+        "cost": 0.00036963,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00036963,
+          "upstream_inference_prompt_cost": 0.00022416,
+          "upstream_inference_completions_cost": 0.00014547
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    }
+  ]
+}

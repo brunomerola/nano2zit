@@ -1,0 +1,855 @@
+{
+  "startedAt": "2026-02-24T20:50:53.127Z",
+  "finishedAt": "2026-02-24T20:56:15.140Z",
+  "config": {
+    "csvPath": "prompts.csv",
+    "sampleSize": 6,
+    "maxJsonChars": 4200,
+    "delayMs": 350,
+    "profiles": [
+      "v3-balanced",
+      "v3-rich"
+    ],
+    "targets": [
+      {
+        "id": "openai-compat:Qwen/Qwen3-32B",
+        "provider": "openai-compat",
+        "model": "Qwen/Qwen3-32B",
+        "openaiCompatBaseUrl": "https://openrouter.ai/api/v1"
+      },
+      {
+        "id": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+        "provider": "openai-compat",
+        "model": "Qwen/Qwen2.5-72B-Instruct",
+        "openaiCompatBaseUrl": "https://openrouter.ai/api/v1"
+      }
+    ],
+    "defaultProfile": "v3-balanced",
+    "runtimeModelConfig": {
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "maxTokens": 4096,
+      "temperature": 0.2,
+      "openaiCompatBaseUrl": "https://openrouter.ai/api/v1"
+    }
+  },
+  "dataset": {
+    "totalRows": 70,
+    "selectedSamples": [
+      {
+        "promptId": "43",
+        "tweetId": "2006628018068893986",
+        "signature": "image_generation_prompt",
+        "jsonChars": 1982
+      },
+      {
+        "promptId": "11",
+        "tweetId": "2011264537450987944",
+        "signature": "image_description",
+        "jsonChars": 1224
+      },
+      {
+        "promptId": "46",
+        "tweetId": "2005002407013400789",
+        "signature": "model_hint|negative_prompt|prompt",
+        "jsonChars": 637
+      },
+      {
+        "promptId": "5",
+        "tweetId": "2011913223964852336",
+        "signature": "camera|environment|lighting|quality|style|subject",
+        "jsonChars": 1095
+      },
+      {
+        "promptId": "77",
+        "tweetId": "2008964874400092374",
+        "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+        "jsonChars": 1122
+      },
+      {
+        "promptId": "8",
+        "tweetId": "2011431885986320524",
+        "signature": "camera|composition|lighting|mood|prompt|quality|style",
+        "jsonChars": 961
+      }
+    ]
+  },
+  "summary": [
+    {
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "total": 6,
+      "ok": 6,
+      "errors": 0,
+      "avgScore": 90.67,
+      "avgLatencyMs": 26785.83,
+      "avgSfwWords": 170.17,
+      "avgNsfwWords": 176.83,
+      "parseSuccessPct": 100,
+      "constraintsOkPct": 100,
+      "bannedCleanPct": 100,
+      "aspectOkPct": 33.33
+    },
+    {
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "total": 6,
+      "ok": 6,
+      "errors": 0,
+      "avgScore": 80.67,
+      "avgLatencyMs": 25005.67,
+      "avgSfwWords": 129.67,
+      "avgNsfwWords": 138.17,
+      "parseSuccessPct": 83.33,
+      "constraintsOkPct": 83.33,
+      "bannedCleanPct": 100,
+      "aspectOkPct": 16.67
+    },
+    {
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "total": 6,
+      "ok": 0,
+      "errors": 6,
+      "avgScore": 0,
+      "avgLatencyMs": 0,
+      "avgSfwWords": 0,
+      "avgNsfwWords": 0,
+      "parseSuccessPct": 0,
+      "constraintsOkPct": 0,
+      "bannedCleanPct": 0,
+      "aspectOkPct": 0
+    },
+    {
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "total": 6,
+      "ok": 0,
+      "errors": 6,
+      "avgScore": 0,
+      "avgLatencyMs": 0,
+      "avgSfwWords": 0,
+      "avgNsfwWords": 0,
+      "parseSuccessPct": 0,
+      "constraintsOkPct": 0,
+      "bannedCleanPct": 0,
+      "aspectOkPct": 0
+    }
+  ],
+  "cases": [
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 29832,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 213,
+      "nsfwWords": 223,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1936,
+        "completion_tokens": 2100,
+        "total_tokens": 4036,
+        "cost": 0.00146804,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00146804,
+          "upstream_inference_prompt_cost": 0.00027104,
+          "upstream_inference_completions_cost": 0.001197
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1493,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 27658,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": false,
+      "sfwWords": 143,
+      "nsfwWords": 158,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1712,
+        "completion_tokens": 1108,
+        "total_tokens": 2820,
+        "cost": 0.0005036,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0005036,
+          "upstream_inference_prompt_cost": 0.0001712,
+          "upstream_inference_completions_cost": 0.0003324
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 855,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 19610,
+      "score": 24,
+      "metrics": {
+        "parseOk": false,
+        "xmlTags": false,
+        "sfwOneParagraph": false,
+        "nsfwOneParagraph": false,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": false,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": true,
+      "hasCameraData": false,
+      "sfwWords": 0,
+      "nsfwWords": 0,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1586,
+        "completion_tokens": 1928,
+        "total_tokens": 3514,
+        "cost": 0.000966992,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00148768,
+          "upstream_inference_prompt_cost": 0.00025376,
+          "upstream_inference_completions_cost": 0.00123392
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1402
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 35173,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 157,
+      "nsfwWords": 164,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1764,
+        "completion_tokens": 1923,
+        "total_tokens": 3687,
+        "cost": 0.00067956,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00067956,
+          "upstream_inference_prompt_cost": 0.00014112,
+          "upstream_inference_completions_cost": 0.00053844
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1719,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 27380,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 148,
+      "nsfwWords": 152,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1690,
+        "completion_tokens": 1111,
+        "total_tokens": 2801,
+        "cost": 0.0005023,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0005023,
+          "upstream_inference_prompt_cost": 0.000169,
+          "upstream_inference_completions_cost": 0.0003333
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 753,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-balanced",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 10381,
+      "score": 100,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": true,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 117,
+      "nsfwWords": 132,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1665,
+        "completion_tokens": 923,
+        "total_tokens": 2588,
+        "cost": 0.000557128,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00085712,
+          "upstream_inference_prompt_cost": 0.0002664,
+          "upstream_inference_completions_cost": 0.00059072
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 578
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 40960,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 202,
+      "nsfwWords": 198,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 2140,
+        "completion_tokens": 2178,
+        "total_tokens": 4318,
+        "cost": 0.00078104,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00078104,
+          "upstream_inference_prompt_cost": 0.0001712,
+          "upstream_inference_completions_cost": 0.00060984
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1816,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 36052,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": false,
+      "sfwWords": 156,
+      "nsfwWords": 167,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1915,
+        "completion_tokens": 1949,
+        "total_tokens": 3864,
+        "cost": 0.00069892,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00069892,
+          "upstream_inference_prompt_cost": 0.0001532,
+          "upstream_inference_completions_cost": 0.00054572
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1681,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 15788,
+      "score": 74,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": false,
+        "nsfwOneParagraph": false,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": true,
+      "hasCameraData": false,
+      "sfwWords": 170,
+      "nsfwWords": 169,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1789,
+        "completion_tokens": 1534,
+        "total_tokens": 3323,
+        "cost": 0.0008242,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001268,
+          "upstream_inference_prompt_cost": 0.00028624,
+          "upstream_inference_completions_cost": 0.00098176
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1072
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 22986,
+      "score": 100,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": true,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 159,
+      "nsfwWords": 180,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1966,
+        "completion_tokens": 1546,
+        "total_tokens": 3512,
+        "cost": 0.00115646,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00115646,
+          "upstream_inference_prompt_cost": 0.00027524,
+          "upstream_inference_completions_cost": 0.00088122
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1061,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 26473,
+      "score": 90,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": false,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 190,
+      "nsfwWords": 192,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1893,
+        "completion_tokens": 1556,
+        "total_tokens": 3449,
+        "cost": 0.00058712,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00058712,
+          "upstream_inference_prompt_cost": 0.00015144,
+          "upstream_inference_completions_cost": 0.00043568
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1182,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "ok",
+      "targetId": "openai-compat:Qwen/Qwen3-32B",
+      "profileId": "v3-rich",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 18456,
+      "score": 100,
+      "metrics": {
+        "parseOk": true,
+        "xmlTags": true,
+        "sfwOneParagraph": true,
+        "nsfwOneParagraph": true,
+        "bannedTermsAbsent": true,
+        "noNegativePromptLiteral": true,
+        "constraintsRuleOk": true,
+        "aspectRatioMentioned": true,
+        "cameraRuleOk": true
+      },
+      "expectedRatio": "4:5",
+      "hasNegativeConstraints": false,
+      "hasCameraData": true,
+      "sfwWords": 144,
+      "nsfwWords": 155,
+      "provider": "openai-compat",
+      "model": "Qwen/Qwen3-32B",
+      "usage": {
+        "prompt_tokens": 1872,
+        "completion_tokens": 390,
+        "total_tokens": 2262,
+        "cost": 0.0006552,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0006552,
+          "upstream_inference_prompt_cost": 0.0001872,
+          "upstream_inference_completions_cost": 0.000468
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 359,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 168,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 181,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 161,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 142,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-balanced",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 402,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "43",
+      "tweetId": "2006628018068893986",
+      "signature": "image_generation_prompt",
+      "jsonChars": 1982,
+      "latencyMs": 600,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "11",
+      "tweetId": "2011264537450987944",
+      "signature": "image_description",
+      "jsonChars": 1224,
+      "latencyMs": 144,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "46",
+      "tweetId": "2005002407013400789",
+      "signature": "model_hint|negative_prompt|prompt",
+      "jsonChars": 637,
+      "latencyMs": 141,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "5",
+      "tweetId": "2011913223964852336",
+      "signature": "camera|environment|lighting|quality|style|subject",
+      "jsonChars": 1095,
+      "latencyMs": 156,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "77",
+      "tweetId": "2008964874400092374",
+      "signature": "ar|camera|intent|lighting|outfit|pose|scene|subject",
+      "jsonChars": 1122,
+      "latencyMs": 159,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    },
+    {
+      "status": "error",
+      "targetId": "openai-compat:Qwen/Qwen2.5-72B-Instruct",
+      "profileId": "v3-rich",
+      "promptId": "8",
+      "tweetId": "2011431885986320524",
+      "signature": "camera|composition|lighting|mood|prompt|quality|style",
+      "jsonChars": 961,
+      "latencyMs": 165,
+      "error": "OpenAI-compatible 400: Qwen/Qwen2.5-72B-Instruct is not a valid model ID"
+    }
+  ]
+}
