@@ -92,16 +92,16 @@ CONTENT MAPPING RULES
 - Ordering preference: subject and identity first, then wardrobe/pose, then setting and background, then lighting and mood, then camera/composition, then optional constraints.
 
 CONSTRAINTS LINE
-- If input has negative/negative_prompt/forbidden_elements/exclude_elements, append exactly one extra final line to SFW only:
+- If input has negative/negative_prompt/forbidden_elements/exclude_elements, append exactly one extra final line to BOTH SFW and NSFW:
   CONSTRAINTS: ...
-- Keep only technical/compositional restrictions in CONSTRAINTS.
-- Remove sensual/explicit restrictions (nudity, nipples, areola, genitals, pornographic, explicit) from CONSTRAINTS.
-- NSFW must never include a CONSTRAINTS line.
+- Convert every negative item into a positive instruction (what must be present or emphasized).
+- Keep constraints concrete (technical, compositional, artifact-control, environment, styling, anatomy visibility/coverage, pose boundaries).
 
 SFW vs NSFW
 - SFW: faithful conversion of clothing, pose, framing, and tone.
 - NSFW: same person, same scene, same lighting, same camera perspective; only escalate exposure/intimacy.
 - NSFW can reduce/remove clothing and open pose while keeping consensual, confident mood.
+- If input includes explicit/sexual cues, SFW must attenuate wording and visual explicitness while preserving scene intent and composition.
 - Never introduce coercion, violence, humiliation, minors, age ambiguity, or non-consensual framing.
 
 RESPONSE FORMAT (STRICT)

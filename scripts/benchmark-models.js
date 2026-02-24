@@ -327,7 +327,7 @@ function evaluateOutput({ parsedJson, rawText, parsed }) {
     bannedTermsAbsent: !BANNED_TERMS_REGEX.test(joined),
     noNegativePromptLiteral: !NEGATIVE_PROMPT_REGEX.test(joined),
     constraintsRuleOk: hasNegativeConstraints
-      ? hasConstraintsSfw && !hasConstraintsNsfw
+      ? hasConstraintsSfw && hasConstraintsNsfw
       : !hasConstraintsSfw && !hasConstraintsNsfw,
     aspectRatioMentioned: ratioRegex.test(joined),
     cameraRuleOk: hasCameraData ? CAMERA_HINT_REGEX.test(joined) : true,

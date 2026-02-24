@@ -23,7 +23,7 @@
 - No "Respond with valid JSON": removed from active runtime prompt.
 - Camera rule (preserve when explicit, do not invent): enforced.
 - Aspect-ratio fallback logic: enforced (`aspect_ratio` -> `16:9` if landscape -> `4:5`).
-- CONSTRAINTS behavior: enforced only for SFW when negative keys exist; explicit-content restrictions stripped.
+- CONSTRAINTS behavior: enforced for both SFW and NSFW when negative keys exist; negatives are rewritten into positive guidance.
 - Quality-tag filtering (`8k`, `uhd`, `masterpiece`, etc.): enforced in instruction layer and few-shot generation.
 
 ## Dataset-aware few-shot strategy
